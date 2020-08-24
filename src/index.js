@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import Store from './store/index.js'
+import {Provider} from 'react-redux'
+import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import { PersistGate } from "redux-persist/integration/react";
+import { createGlobalStyle } from "styled-components";
+
+const { persistor, store} = Store();
+
+const GlobalStyle = createGlobalStyle `
+  html {
+    background-color: #23374d;
+    box-sizing: border-box;
+    transition: all 0.5s ease-in;
+  }
+`;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  //<Provider store={store}><App/></Provider>,
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <GlobalStyle />
+      <App />
+    </PersistGate>
+  </Provider>,
   document.getElementById('root')
 );
 
